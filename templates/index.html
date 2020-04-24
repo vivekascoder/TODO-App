@@ -1,0 +1,58 @@
+{%extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{%block title%}TODO{%endblock%}
+
+{%block header%}
+<h4 class="text-white">TODO</h4>
+{%endblock%}
+{%block body%}
+{%if user.is_authenticated%}
+<div class="todo-wrapper">
+    <div class="add">
+        <form action="add/" method="post">
+            {%csrf_token%}
+            <center>
+                <span>
+                    <label for="title">Add New: </label>
+                    <input type="text" name="title" id="">
+                </span>
+                <span id="add-btn"><input type="submit" value="Add New"></span>
+            </center>
+        </form>
+    </div>
+    <div class="todo">
+        <hr>
+        {%for i in todoitems%}
+        <div class="todo-item">
+            {%if i.status == False%}
+            <span>{{i.title}}</span>
+            {%else%}
+            <span style="text-decoration: line-through;">{{i.title}}</span>
+            {%endif%}
+            <span>
+                <a href="update/{{i.pk}}">Update</a>
+                <a href="delete/{{i.pk}}">Delete</a>
+            </span>
+        </div>
+        {%endfor%}
+        <hr>
+    </div>
+    <div class="foot">
+        <input type="submit" value="Delete All Tasks">
+    </div>
+</div>
+<h1>Login as {{user.username}}</h1>
+<ul>
+    <li><a href="logout/">Logout</a></li>
+</ul>
+
+{%else%}
+<center>
+    <h1>Welcome to TODO app.</h1>
+</center>
+<ul>
+    <li><a href="login/">Login Here.</a></li>
+    <li><a href="register/">Register New User.</a></li>
+    {%endif%}
+    {%endblock%}
